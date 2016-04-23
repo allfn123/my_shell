@@ -43,7 +43,7 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
 	
 	else if (strcmp(segment[0],"ls")==0) 	
 	{
-		ls(segment[1]);
+		ls(segment,n);
 		return;
 	}
 	
