@@ -22,6 +22,6 @@ int pwd(void)
 		return 1;
 	}
 
-	printf("Current working directory: %s\n",current_work_path);
+	printf("Current working directory: \n%s\n",current_work_path);
 	return 0;
 }

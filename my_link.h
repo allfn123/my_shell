@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "stat_print.h"
 
 struct lnode
 {
@@ -23,16 +24,47 @@ node *create()
 	return head;
 }
 
-void insert(node * head, char * newdir)
+void insert_by_name(node * head, char * newdir)
 {
 	node *p,*tmp,*q;
 	p=head;
 	q=p->next;
 
-	while(q!=NULL && strcmp(q->dirp,newdir)<0)
+	while(q!=NULL && strcasecmp(q->dirp,newdir)<0)
 	{
 		p=q;
 		q=q->next;
+	}
+
+	if ((tmp=(node *) malloc(sizeof(node)))==NULL)
+	{
+		perror("Failed to malloc for a node");
+		return ;
+	}
+
+	tmp->next=q;
+	p->next=tmp;
+	strcpy(tmp->dirp,newdir);
+}
+
+void insert_by_time(char *path,node * head, char * newdir)
+{
+	node *p,*tmp,*q;
+	p=head;
+	q=p->next;
+
+	while(q!=NULL)
+	{
+		unsigned long int mtime1,mtime2;
+		mtime1=get_mtime(path,newdir);
+		mtime2=get_mtime(path,q->dirp);
+		if (mtime1>=mtime2)
+			break;
+		else
+		{
+			p=q;
+			q=q->next;
+		}
 	}
 
 	if ((tmp=(node *) malloc(sizeof(node)))==NULL)
@@ -64,12 +96,15 @@ int get_max_length(node * head)
 	return max_length;
 }
 
-void display(node * head)
+void display(char *path,node * head,int a,int i,int l,int t)
 {
 	node *p;
 	p=head;
-	int i=0;
+	int j=0;
 	int max_length=get_max_length(head);
+
+	int row=8;
+	if (i!=0) row=6;
 
 
 	if (p->next==NULL)
@@ -79,13 +114,82 @@ void display(node * head)
 	}
 	else 
 	{	p=p->next;
-		while(p!=NULL)
+//-----------------   normal  --------------------------
+		if (a+l==0)
 		{
-			printf("%-*s",max_length+2,p->dirp);
-			i++;
-			if(i==8){printf("\n");i=0;}
-			p=p->next;
+			while(p!=NULL)
+			{
+				if (p->dirp[0]=='.')	//hidden files
+				{
+					p=p->next;
+					continue;
+				}					
+			
+				if (i!=0) 
+					print_inode(path,p->dirp);
+
+				printf("%-*s",max_length+2,p->dirp);
+				j++;
+				if(j==row){printf("\n");j=0;}
+				p=p->next;
+			}
 		}
+//-----------------  -a  all  -----------------------
+		else if (a==1 && l==0)
+		{
+			while(p!=NULL)
+			{	
+
+				if (i!=0) 
+					print_inode(path,p->dirp);
+
+				printf("%-*s",max_length+2,p->dirp);
+				j++;
+				if(j==row){printf("\n");j=0;}
+				p=p->next;
+			}
+		}
+//-----------------  -l  list detail  -----------------------
+		else if (l==1 && a==0)
+		{
+			while(p!=NULL)
+			{	
+				if (p->dirp[0]=='.')	//hidden files
+				{
+					p=p->next;
+					continue;
+				}	
+
+				if (i!=0) 
+					print_inode(path,p->dirp);
+
+				print_stat(path,p->dirp);
+				printf("%-*s",max_length+2,p->dirp);
+				printf("\n");
+
+				j++;
+				p=p->next;
+			}
+		}
+//-----------------  -al  all _list detail  -----------------------
+		else if (l*a==1)
+		{
+			while(p!=NULL)
+			{
+
+				if (i!=0) 
+					print_inode(path,p->dirp);
+
+				print_stat(path,p->dirp);
+				printf("%-*s",max_length+2,p->dirp);
+				printf("\n");
+				
+				j++;
+				p=p->next;
+			}
+		}
+
+
 		printf("\n");
 	}
 	
