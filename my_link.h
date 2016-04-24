@@ -164,7 +164,10 @@ void display(char *path,node * head,int a,int i,int l,int t)
 					print_inode(path,p->dirp);
 
 				print_stat(path,p->dirp);
-				printf("%-*s",max_length+2,p->dirp);
+				printf("%s",p->dirp);
+
+				print_link(path,p->dirp);
+
 				printf("\n");
 
 				j++;
@@ -181,7 +184,10 @@ void display(char *path,node * head,int a,int i,int l,int t)
 					print_inode(path,p->dirp);
 
 				print_stat(path,p->dirp);
-				printf("%-*s",max_length+2,p->dirp);
+				printf("%s",p->dirp);
+
+				print_link(path,p->dirp);
+				
 				printf("\n");
 				
 				j++;

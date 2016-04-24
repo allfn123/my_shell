@@ -95,6 +95,34 @@ void print_inode(char *path,char *filename)
 	printf("%*lu ",10,st.st_ino);
 }
 
+void print_link(char *path,char *filename)
+{
+	struct stat st;
+
+	char d_path[256];
+	strcpy(d_path,path);
+	char buf[1024];
+
+	if (d_path[strlen(d_path)-1]=='/')
+		strcat(d_path,filename);
+	else 
+	{
+		strcat(d_path,"/");
+		strcat(d_path,filename);
+	}
+
+	if (lstat(d_path,&st))
+	{
+		perror("Failed to get stat from files");
+		return ;
+	}
+
+	memset(buf,0,1024);
+	if(readlink(d_path,buf,1024)!=-1)
+		printf(" -> %s",buf);
+	else return;
+}
+
 unsigned long int get_mtime(char *path,char *filename)
 {
 	struct stat st;
