@@ -1,6 +1,7 @@
 #include "cd.h"
 #include "ls.h"
 #include "pwd.h"
+#include "cat.h"
 
 #define BUF_SIZE 256
 
@@ -37,14 +38,21 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
                                  
 	else if (strcmp(segment[0],"cd")==0)			
 	{
-		cd();						
+		cd(segment,n);						
 		return;						
 	}
 	
 	else if (strcmp(segment[0],"ls")==0) 	
 	{
-		ls(segment[1]);
+		ls(segment,n);
 		return;
+	}
+
+	else if (strcmp(segment[0],"cat")==0)
+	{
+
+		cat(segment,n);
+		return ;
 	}
 	
 	else if(access(segment[0],F_OK | X_OK)==0)

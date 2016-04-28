@@ -17,16 +17,30 @@ int main(void)
 	int fd;
 	char buf[BUF_SIZE];
 //	char buf_after[20][BUF_SIZE];
+
+
+	char pwd[BUF_SIZE],pwd_origin[BUF_SIZE];
+	memset(pwd_origin,0,sizeof(pwd));
+	getcwd(pwd_origin,BUF_SIZE);
+	strcat(pwd_origin,"/");
+	strcat(pwd_origin,"myfifo");
+
+
 	int n;
 	umask(0);
 	while (1)
 	{
-		fd=open(FIFO_NAME,O_RDONLY);
+		memset(pwd,0,sizeof(pwd));
+		getcwd(pwd,BUF_SIZE);
+		printf("[Trevor's shell %s]$ ",pwd);
+
+		fd=open(pwd_origin,O_RDONLY);
 		memset(buf,0,sizeof(buf));
 		
 		read(fd,buf,BUF_SIZE);
 
 		char buf_after[20][BUF_SIZE];
+		printf("%s",buf);
 
 		n=handling_buf(buf,buf_after);
 
