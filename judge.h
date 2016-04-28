@@ -37,7 +37,7 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
                                  
 	else if (strcmp(segment[0],"cd")==0)			
 	{
-		cd();						
+		cd(segment,n);						
 		return;						
 	}
 	
