@@ -9,10 +9,24 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
 {
 
 	char command_path[BUF_SIZE],command_name[BUF_SIZE];
+	int t;
 	memset(command_path,0,sizeof(command_path));
-	memset(command_name,0,sizeof(command_path));
+	memset(command_name,0,sizeof(command_name));
 	strcpy(command_name,segment[0]);
-	check_PATH(command_name,command_path);	
+	t=check_PATH(command_name,command_path);	
+
+
+	char *argv[BUF_SIZE];
+	int k=0;
+
+	while(k<n)
+	{
+		//memset(argv[k],0,sizeof(argv[k]));
+		argv[k]=segment[k];
+		k++;
+	}
+	argv[n]=NULL;
+
 
 	if (strcmp(segment[0],"exit")==0) 			//It judges whether the command is built-in command, executable file in current directory or
 	{							//invalid command.
@@ -55,9 +69,38 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
 		return;
 	}
 	
-	else if (command_path!=NULL)
+	else if (t==0 && command_path!=NULL)
 	{
-		printf("%s\n",command_path);
+
+		if (access(command_path,F_OK | X_OK)==0)
+		{
+			pid_t pid;
+			int status;
+			pid=fork();
+
+			if (pid<0)
+			{
+				perror("Failed to fork\n");		
+				return;
+			}
+
+			else if (pid==0)
+			{
+				if (execv(command_path,argv)==-1)
+				{
+					perror("Exec error");
+					exit(EXIT_FAILURE);
+				}
+				exit(EXIT_SUCCESS);
+			}
+
+			else							//Parent program's 	
+			{
+				waitpid(pid,&status,0);
+				return ;
+			}
+		}
+
 		return;
 	}
 
@@ -76,9 +119,10 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
 		else if (pid==0)
 		{
 
-			if (execlp(segment[0],NULL)==-1)
+			if (execvp(segment[0],argv)==-1)
 			{
 				perror("Exec error");
+				printf("May be ./[filename]?\n");
 				exit(EXIT_FAILURE);
 			}
 			exit(EXIT_SUCCESS);

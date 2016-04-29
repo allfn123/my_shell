@@ -39,7 +39,7 @@ int main(void)
 		
 		read(fd,buf,BUF_SIZE);
 
-		char buf_after[20][BUF_SIZE];
+		char *buf_after[BUF_SIZE];
 		printf("%s",buf);
 
 		n=handling_buf(buf,buf_after);

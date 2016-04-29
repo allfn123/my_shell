@@ -18,7 +18,7 @@ int handling_buf(char *before,char segment[][BUF_SIZE])		//This function is used
 	if (strcmp(segment[num_of_segment],"\n")==0)
 		num_of_segment--;
 	else
-		segment[num_of_segment][strlen(segment[num_of_segment])-1]='\0';	
+		segment[num_of_segment][strlen(segment[num_of_segment])-1]='\0';
 
 	return num_of_segment+1;
 }

@@ -11,6 +11,7 @@ int main(int argc,char *argv[])
 	if (argc==1)
 	{
 		filecopy(stdin, stdout);
+		return 0;
 	}
 	else
 	{
