@@ -16,9 +16,9 @@ int main(int argc,char *argv[])
 	{
 		while (--argc>0)
 		{
-			if((fp=fopen(*++argv,O_RDONLY))==NULL)
+			if((fp=fopen(*++argv,"r"))==NULL)
 			{
-				printf("cat: %s:",arguments[i]);
+				printf("cat: %s:",*++argv);
 				perror("");
 				continue;
 			}
@@ -29,7 +29,7 @@ int main(int argc,char *argv[])
 				continue;
 			}
 		}
-		
+
 		return 0;
 	}
 }

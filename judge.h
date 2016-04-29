@@ -1,12 +1,19 @@
 #include "cd.h"
 #include "ls.h"
 #include "pwd.h"
-#include "cat.h"
+#include "check_PATH.h"
 
 #define BUF_SIZE 256
 
 void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge the first segment separated from the buf in the main function.
 {
+
+	char command_path[BUF_SIZE],command_name[BUF_SIZE];
+	memset(command_path,0,sizeof(command_path));
+	memset(command_name,0,sizeof(command_path));
+	strcpy(command_name,segment[0]);
+	check_PATH(command_name,command_path);	
+
 	if (strcmp(segment[0],"exit")==0) 			//It judges whether the command is built-in command, executable file in current directory or
 	{							//invalid command.
 		if (n!=1)
@@ -47,17 +54,17 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
 		ls(segment,n);
 		return;
 	}
-
-	else if (strcmp(segment[0],"cat")==0)
-	{
-
-		cat(segment,n);
-		return ;
-	}
 	
-	else if(access(segment[0],F_OK | X_OK)==0)
+	else if (command_path!=NULL)
+	{
+		printf("%s\n",command_path);
+		return;
+	}
+
+	else if (access(segment[0],F_OK | X_OK)==0)
 	{
 		pid_t pid;
+		int status;
 		pid=fork();
 
 		if (pid<0)
@@ -72,14 +79,18 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
 			if (execlp(segment[0],NULL)==-1)
 			{
 				perror("Exec error");
-				exit(1);
+				exit(EXIT_FAILURE);
 			}
-			exit(1);
+			exit(EXIT_SUCCESS);
 		}
 
 		else							//Parent program's 	
+		{
+			waitpid(pid,&status,0);
 			return ;
+		}
 	}
+
 
 	else
 	{
