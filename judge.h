@@ -5,7 +5,7 @@
 
 #define BUF_SIZE 256
 
-void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge the first segment separated from the buf in the main function.
+void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is used to judge the first segment separated from the buf in the main function.
 {
 
 	char command_path[BUF_SIZE],command_name[BUF_SIZE];
@@ -34,6 +34,10 @@ void judge(char segment[][BUF_SIZE],int n)				//This function is used to judge t
 		{
 			printf("Usage: exit\n");
 			return ;
+		}
+		if (remove(FIFO_NAME)==-1)
+		{
+			perror("FIFO cannot be deleted:");
 		}
 		printf("exit\n");				//If it is a built-in command, it calls the built-in function to finish the task.
 		exit(0);                                	//If it is a executable file, it forks the executable file.
