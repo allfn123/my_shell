@@ -9,7 +9,10 @@
 #include "handling_buf.h"
 #define BUF_SIZE 256
 
+static int old_in,old_out,flag=0;
 
+void backup(int *,int *);
+void re_all(int,int);
 
 int main(int argc,char *argv[])
 {
@@ -42,6 +45,18 @@ int main(int argc,char *argv[])
 		
 		while (1)
 		{
+
+			if(flag==0)
+			{
+				backup(&old_in,&old_out);
+				flag=1;
+			}
+			else if(flag==-1)
+			{
+				re_all(old_in,old_out);
+				flag=1;
+			}
+
 			memset(pwd,0,sizeof(pwd));
 			getcwd(pwd,BUF_SIZE);
 			printf("[Trevor's shell %s]$ ",pwd);
@@ -53,7 +68,7 @@ int main(int argc,char *argv[])
 			printf("%s",buf);
 
 			char *buf_after[BUF_SIZE];
-			n=handling_buf(buf,buf_after);
+			n=handling_buf(buf,buf_after,&flag);
 
 			judge(buf_after,n,FIFO_NAME);
 		

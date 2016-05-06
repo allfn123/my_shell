@@ -17,6 +17,7 @@ void ls(char arguments[][BUF_SIZE],int num_of_arguments)
 
 	int a,l,i,t;		//bool--arguments
 	a=l=i=t=0;
+	if (strcmp(arguments[0],"ll")==0) l=1;
 
 	int j=1,m=0,n;
 

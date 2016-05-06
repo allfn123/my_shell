@@ -7,15 +7,25 @@
 #define BUF_SIZE 256
 //function handling_buf
 
-void re_in(char []);
-void re_out(char []);
-void redirection(int,char [],int*);
+static int old_in,old_out,flag=0;
 
-int handling_buf(char *before,char segment_after[][BUF_SIZE],int *flag)		//This function is used to separate the buf from myfifo into several independent segments.
+void backup(int *,int *);
+void re_in(char **);
+void re_out(char **);
+void re_all(int,int);
+void redirection(int,char *);
+
+int handling_buf(char *before,char segment_after[][BUF_SIZE])		//This function is used to separate the buf from myfifo into several independent segments.
 {
-	
-
-	char segment[40][BUF_SIZE];
+	if(flag==0)
+	{
+		backup(&old_in,&old_out);
+		flag++;
+	}
+	else if(flag==-1)
+	{
+		re_all(old_in,old_out);
+	}
 
 	char *tmp;
 	int num_of_segment=0;					//num_of_segment is used to memorize the numbers of independent segments.
@@ -34,30 +44,30 @@ int handling_buf(char *before,char segment_after[][BUF_SIZE],int *flag)		//This 
 		segment[num_of_segment][strlen(segment[num_of_segment])-1]='\0';
 	num_of_segment++;
 
+
 	int i=0,n=0;
-	while (i<num_of_segment)
+	while (i<segment)
 	{
 		if(strcmp(segment[i],">")!=0)
 		{
 			if(strcmp(segment[i],"<")!=0)
 			{
-				strcpy(segment_after[n],segment[i]);
+				segment_after[n]=segment[i];
 				n++;
 				i++;
 			}
 			else
 			{
-				redirection(1,segment[++i],flag);
+				redirection(1,segment[++i]);
 				i++;
 			}
 		}
 		else
 		{
-			redirection(2,segment[++i],flag);
+			redirection(2,segment[++i]);
 			i++;
 		}
 	}
-	return n;
 
 }
 
@@ -67,18 +77,21 @@ void backup(int *old_in,int *old_out)
 	*old_in=dup(STDIN_FILENO);
 }
 
-void re_in(char arguments[])
+void re_in(char arguments[][BUF_SIZE])
 {
-	int fd;
-	fd=open(arguments,O_CREAT | O_RDWR,0664);
+	int i=0,fd;
+	while(strcmp(arguments[i],"<")!=0) i++;
+	fd=open(arguments[i+1],O_CREAT | O_RDWR,0664);
 	dup2(fd,STDIN_FILENO);
 	close(fd);
 }
 
-void re_out(char arguments[])
+void re_out(char arguments[][BUF_SIZE])
 {
-	int fd;
-	fd=open(arguments,O_CREAT | O_RDWR | O_TRUNC ,0664);
+	int i=0,fd;
+	while(strcmp(arguments[i],">")!=0) i++;
+	fd=open(arguments[i+1],O_CREAT | O_RDWR | O_TRUNC ,0664);
+	
 	dup2(fd,STDOUT_FILENO);
 	close(fd);
 }
@@ -89,12 +102,12 @@ void re_all(int old_in,int old_out)
 	dup2(old_out,STDOUT_FILENO);
 }
 
-void redirection(int type,char arguments[],int *flag)
+void redirection(int type,char *arguments)
 {
 	switch(type)
 	{
-		case 1:re_in(arguments);*flag=-1;break;
-		case 2:re_out(arguments);*flag=-1;break;
+		case 1:re_in(*arguments);flag=-1;break;
+		case 2:re_out(*arguments);flag=-1;break;
 		default:printf("Usage command <filename > filename");
 	}
 }

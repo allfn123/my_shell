@@ -13,8 +13,7 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 	memset(command_path,0,sizeof(command_path));
 	memset(command_name,0,sizeof(command_name));
 	strcpy(command_name,segment[0]);
-	t=check_PATH(command_name,command_path);	
-
+	t=check_PATH(command_name,command_path);
 
 	char *argv[BUF_SIZE];
 	int k=0;
@@ -67,7 +66,7 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		return;						
 	}
 	
-	else if (strcmp(segment[0],"ls")==0) 	
+	else if (strcmp(segment[0],"ls")==0 || strcmp(segment[0],"ll")==0) 	
 	{
 		ls(segment,n);
 		return;
@@ -75,7 +74,6 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 	
 	else if (t==0 && command_path!=NULL)
 	{
-
 		if (access(command_path,F_OK | X_OK)==0)
 		{
 			pid_t pid;
@@ -90,7 +88,7 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 
 			else if (pid==0)
 			{
-				if (execv(command_path,argv)==-1)
+				if (execvp(command_path,argv)==-1)
 				{
 					perror("Exec error");
 					exit(EXIT_FAILURE);
@@ -113,14 +111,13 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		pid_t pid;
 		int status;
 		pid=fork();
-
 		if (pid<0)
 		{
 			perror("Failed to fork\n");		
 			return;
 		}
 
-		else if (pid==0)
+		if (pid==0)
 		{
 
 			if (execvp(segment[0],argv)==-1)

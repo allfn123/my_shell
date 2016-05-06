@@ -1,5 +1,7 @@
 
 #define BUF_SIZE 256
+static int init=0;
+static 	char path_of_PATH[BUF_SIZE];
 
 int check_PATH(char command_name[BUF_SIZE],char command_path[BUF_SIZE])
 {
@@ -7,9 +9,18 @@ int check_PATH(char command_name[BUF_SIZE],char command_path[BUF_SIZE])
 
 	FILE *fp;
 
-	if((fp=fopen("PATH","r"))==NULL)
+	if (init==0)
 	{
-		//printf("Cannot find the PATH file\n");
+		memset(path_of_PATH,0,sizeof(path_of_PATH));
+		getcwd(path_of_PATH,BUF_SIZE);
+		strcat(path_of_PATH,"/");
+		strcat(path_of_PATH,"PATH");
+		init++;
+	}
+	
+	if((fp=fopen(path_of_PATH,"r"))==NULL)
+	{
+		printf("Cannot find the PATH file\n");
 		return -1;
 	}
 
