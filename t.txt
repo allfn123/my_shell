@@ -1,0 +1,28 @@
+./:
+        11 drwx------.  2	root	root	     16384  May 11 00:39  lost+found
+   1048579 drwxrwxrwx. 12	root	root	      4096  May 10 22:01  tmp
+    393217 drwxr-xr-x.130	root	root	     12288  May 10 21:58  etc
+    917506 drwxr-xr-x.  3	root	root	      4096  May 10 21:53  opt
+    262146 drwx------.  4	root	root	      4096  May 10 21:49  root
+         2 drwxr-xr-x. 24	root	root	       740  May 10 21:48  run
+         2 drwxr-xr-x. 19	root	root	      4320  May 10 21:47  dev
+         1 dr-xr-xr-x. 13	root	root	         0  May 10 21:47  sys
+         1 dr-xr-xr-x.269	root	root	         0  May 10 21:47  proc
+    262147 drwxr-xr-x.  2	root	root	     12288  May 10 17:05  sbin
+    786433 drwxr-xr-x.  3	root	root	      4096  May 10 17:03  boot
+   1048577 drwxr-xr-x. 22	root	root	      4096  May 10 17:03  lib
+    131073 drwxr-xr-x.  2	root	root	      4096  May 10 17:03  bin
+        12 lrwxrwxrwx.  1	root	root	        29  May 10 17:02  vmlinuz -> boot/vmlinuz-4.4.0-21-generic
+         2 drwxr-xr-x. 24	root	root	      4096  May 10 17:02  .
+        13 lrwxrwxrwx.  1	root	root	        32  May 10 17:02  initrd.img -> boot/initrd.img-4.4.0-21-generic
+         2 drwxr-xr-x. 24	root	root	      4096  May 10 17:02  ..
+    262145 drwxr-xr-x.  3	root	root	      4096  May 10 16:56  home
+   1054625 drwxrwxr-x.  2	root	root	      4096  May 10 16:42  cdrom
+      8194 drwxr-xr-x. 14	root	root	      4096  Apr 21 06:19  var
+      8193 drwxr-xr-x. 11	root	root	      4096  Apr 21 06:13  usr
+    786434 drwxr-xr-x.  2	root	root	      4096  Apr 21 06:07  lib64
+   1048578 drwxr-xr-x.  2	root	root	      4096  Apr 21 06:07  mnt
+    655361 drwxr-xr-x.  3	root	root	      4096  Apr 21 06:07  media
+    786435 drwxr-xr-x.  2	root	root	      4096  Apr 21 06:07  srv
+    131075 drwxr-xr-x.  2	root	root	      4096  Apr 19 22:31  snap
+

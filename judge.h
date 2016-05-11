@@ -1,7 +1,12 @@
 #include "cd.h"
 #include "ls.h"
 #include "pwd.h"
+#include "my_mkdir.h"
+#include "my_rmdir.h"
+#include "my_touch.h"
+#include "my_rm.h"
 #include "check_PATH.h"
+#include "help.h"
 
 #define BUF_SIZE 256
 
@@ -40,7 +45,13 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		}
 		printf("exit\n");				//If it is a built-in command, it calls the built-in function to finish the task.
 		exit(0);                                	//If it is a executable file, it forks the executable file.
-	}              
+	}    
+
+	if (strcmp(segment[0],"help")==0)
+	{
+		help();
+		return;
+	}          
 
 	else if (strcmp(segment[0],"\n")==0 && n==1)
 	{
@@ -71,7 +82,31 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		ls(segment,n);
 		return;
 	}
-	
+
+	else if (strcmp(segment[0],"mkdir")==0)
+	{
+		my_mkdir(segment,n);
+		return;
+	}
+
+	else if (strcmp(segment[0],"rmdir")==0)
+	{
+		my_rmdir(segment,n);
+		return;
+	}
+
+	else if (strcmp(segment[0],"touch")==0)
+	{
+		my_touch(segment,n);
+		return;
+	}
+
+	else if (strcmp(segment[0],"rm")==0)
+	{
+		my_rm(segment,n);
+		return;
+	}	
+
 	else if (t==0 && command_path!=NULL)
 	{
 		if (access(command_path,F_OK | X_OK)==0)
