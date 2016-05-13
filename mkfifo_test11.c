@@ -51,7 +51,7 @@ int main(int argc,char *argv[])
 				backup(&old_in,&old_out);
 				flag=1;
 			}
-			else if(flag==-1)
+			//else if(flag==-1)
 			{
 				re_all(old_in,old_out);
 				flag=1;

@@ -13,13 +13,16 @@
 
 #define BUF_SIZE 256
 
-void My_return(int P);
-
 void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is used to judge the first segment separated from the buf in the main function.
 {
 	int P;
 	P=pipe_check(segment,&n,FIFO_NAME);
 	if (P==1 || P==-1)
+	{
+		return;
+	}
+	if (P==2) exit(1);
+	if (P==3) 
 	{
 		return;
 	}
@@ -47,7 +50,6 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		if (n!=1)
 		{
 			printf("Usage: exit\n");
-			My_return(P);
 			return ;
 		}
 		if (remove(FIFO_NAME)==-1)
@@ -61,14 +63,12 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 	if (strcmp(segment[0],"help")==0)
 	{
 		help();
-		My_return(P);
 		return;
 	}          
 
 	else if (strcmp(segment[0],"\n")==0 && n==1)
 	{
 		printf("\n");
-		My_return(P);
 		return ;
 	}
 
@@ -77,68 +77,58 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		if (n!=1)
 		{
 			printf("Usage: pwd\n");  
-			My_return(P);
 			return ;
 		}
 		pwd();
-		My_return(P);
 		return ;
 	}
 		        
                                  
 	else if (strcmp(segment[0],"cd")==0)			
 	{
-		cd(segment,n);
-		My_return(P);						
+		cd(segment,n);						
 		return;						
 	}
 	
 	else if (strcmp(segment[0],"ls")==0 || strcmp(segment[0],"ll")==0) 	
 	{
 		ls(segment,n);
-		My_return(P);
 		return;
 	}
 
 	else if (strcmp(segment[0],"mkdir")==0)
 	{
 		my_mkdir(segment,n);
-		My_return(P);
 		return;
 	}
 
 	else if (strcmp(segment[0],"rmdir")==0)
 	{
 		my_rmdir(segment,n);
-		My_return(P);
 		return;
 	}
 
 	else if (strcmp(segment[0],"touch")==0)
 	{
 		my_touch(segment,n);
-		My_return(P);
 		return;
 	}
 
 	else if (strcmp(segment[0],"rm")==0)
 	{
 		my_rm(segment,n);
-		My_return(P);
 		return;
 	}
 
 	else if (strcmp(segment[0],"cp")==0)
 	{
 		text_cp(segment,n);
-		My_return(P);
 		return;
 	}	
 
 	else if (strcmp(segment[0],"echo")==0)
 	{
 		my_echo(segment,n);
-		My_return(P);
 		return ;
 	}
 
@@ -152,8 +142,7 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 
 			if (pid<0)
 			{
-				perror("Failed to fork\n");
-				My_return(P);		
+				perror("Failed to fork\n");		
 				return;
 			}
 
@@ -170,11 +159,10 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 			else							//Parent program's 	
 			{
 				waitpid(pid,&status,0);
-				My_return(P);
 				return ;
 			}
 		}
-		My_return(P);
+
 		return;
 	}
 
@@ -186,7 +174,6 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		if (pid<0)
 		{
 			perror("Failed to fork\n");		
-			My_return(P);
 			return;
 		}
 
@@ -205,7 +192,6 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		else							//Parent program's 	
 		{
 			waitpid(pid,&status,0);
-			My_return(P);
 			return ;
 		}
 	}
@@ -214,16 +200,6 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 	else
 	{
 		printf("%s: command not found.\n",segment[0]);	//If it is invalid command, tell the user.
-		My_return(P);
-		return;
-	}
-}
-
-void My_return(int P)
-{
-	if (P==2) exit(1);
-	if (P==3) 
-	{
 		return;
 	}
 }
