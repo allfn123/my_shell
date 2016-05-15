@@ -1,7 +1,7 @@
 #include <string.h>
 #define BUF_SIZE 256
 
-int pipe_check(char arguments[][BUF_SIZE],int *num_of_arguments,char *FIFO_NAME)
+int pipe_check(char arguments[][BUF_SIZE],int *num_of_arguments)
 {
 	int i=0,f=0,j=0,flag;
 	while(i<*num_of_arguments)

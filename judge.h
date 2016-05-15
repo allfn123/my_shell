@@ -18,7 +18,7 @@ void My_return(int P);
 void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is used to judge the first segment separated from the buf in the main function.
 {
 	int P;
-	P=pipe_check(segment,&n,FIFO_NAME);
+	P=pipe_check(segment,&n);
 	if (P==1 || P==-1)
 	{
 		return;
