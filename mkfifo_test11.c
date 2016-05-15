@@ -69,6 +69,11 @@ int main(int argc,char *argv[])
 
 			char *buf_after[BUF_SIZE];
 			n=handling_buf(buf,buf_after,&flag);
+			if (n==-1) 
+			{
+				printf("Notes: Redirection file loss\n");
+				continue;
+			}
 
 			judge(buf_after,n,FIFO_NAME);
 		

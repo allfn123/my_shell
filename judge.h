@@ -24,12 +24,13 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		return;
 	}
 
-	char command_path[BUF_SIZE],command_name[BUF_SIZE];
+	char command_path[BUF_SIZE],command_name[BUF_SIZE],init_path[BUF_SIZE];
 	int t;
 	memset(command_path,0,sizeof(command_path));
 	memset(command_name,0,sizeof(command_name));
+	memset(init_path,0,sizeof(init_path));
 	strcpy(command_name,segment[0]);
-	t=check_PATH(command_name,command_path);
+	t=check_PATH(command_name,command_path,init_path);
 
 	char *argv[BUF_SIZE];
 	int k=0;
@@ -58,9 +59,9 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 		exit(0);                                	//If it is a executable file, it forks the executable file.
 	}    
 
-	if (strcmp(segment[0],"help")==0)
+	if (strcmp(segment[0],"help")==0 || strcmp(segment[0],"?")==0)
 	{
-		help();
+		help(init_path);
 		My_return(P);
 		return;
 	}          
@@ -173,6 +174,12 @@ void judge(char segment[][BUF_SIZE],int n,char *FIFO_NAME)				//This function is
 				My_return(P);
 				return ;
 			}
+		}
+		else
+		{
+			printf("%s: command not found.\n",segment[0]);
+			My_return(P);
+			return;
 		}
 		My_return(P);
 		return;

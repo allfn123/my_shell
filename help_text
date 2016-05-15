@@ -1,0 +1,93 @@
+-------------------------------------------------------------------------------------------------
+General Command Manual of Trevor's shell
+
+BUILTINS
+
+cd [path]
+	Change the current directory to path. The variable HOME is the default path. "~" means HOME. "." means current directory. ".." means last level directory. If arguments [path] is more than ONE, the path will be the first argument. If there is none arguments, the path will be HOME.
+
+cp [source_file_name] [target_file_name]
+	Copy files.
+
+echo [string1] [string2] ... [stringn]
+	Display line(s) of text. Strings is cut apart by SPACE, and each string is displayed in ONE LINE. It can be uesd with output redirection by "> [filename]"
+
+exit
+	Cause the shell to exit with the FIFO delected.
+
+help
+	We are together now! ( *>.<* )  Ooops, you said you come to see me with ?? Okay...
+	I can show you with the usage of the shell and the helpful information about builtin commands...
+	Besides ... ? is my twin. Which one do you prefer ( >﹏< ) 
+
+ll –ailt [path1] [paht2] … [pathn]
+	The same with ls but with the option -l in begining. See in ls.
+
+ls –ailt [path1] [paht2] … [pathn]
+	List directory(ies) contents. The default contents don't including entries starting with .
+
+	It supports 4 options.
+	
+	-a
+		do not ignore entires starting with .
+
+	-i
+		print the index number of each file
+
+	-l
+		use a long listing format
+
+	-t
+		sort by modification time, newest first
+
+mkdir [dir1] [dir2] … [dirn]
+	Make directory(ies), if they do not already exist.
+
+pwd
+	Print name of current/working directory.
+
+rm [filename1] [filename2] … [filenamen]
+	Remove files or empty directory(ies)
+
+rmdir [dir1] [dir2] … [dirn]
+	Remove empty directory(ies)
+
+touch [filename1] [filename2] … [filenamen]
+	Update the access and modification times of each [filename] to the current time.
+	A [filename] argument that does not exist is created empty.
+
+?
+	I am CUTE, am I? My twin help just complain with me that ALL notices were caught by me. (¯□¯) 
+	But, I just have the same ability as help, maybe you'd best visit her, and ... send my greeting to her ~  (∩_∩)
+
+< [filename]
+	Input redirection. You can make the standard input change to a saving in [filename].
+
+> [filename]
+	Output redirection. You can make the standard output change to a saving in [filename].
+
+command_1 [arg1] [arg2] ... [argn] | command_2 [arg1'] [arg2'] ... [argm']
+	Use a pipe to connect the two command. The output from command_1 can be transport to command_2 as its input. 
+	NOTICE: | and < > cannot use together now.
+
+
+
+EXTERNAL COMMAND
+commands from PATH
+	Commands added in the PATH can be used as builtins. PATH must in the same directory with this shell.
+	FORMAT:
+		command
+		absolute path of command
+
+commands not from PATH
+	Commands not added in the PATH require you to change the current directory to the path where the command is in, and use :./command
+	Or you don't want to change the current directry, you can also type the absolute path or relative path before the command's name.
+
+-------------------------------------------------------------------------------------------------
+Written by Trevor DeWitt.
+If some bugs or suggestions you want to feedback for, please contact the author:
+E-mail:allfn123@sjtu.edu.cn
+Wechat: fengchuzhao
+2016/5/10
+THANKS
+-------------------------------------------------------------------------------------------------
